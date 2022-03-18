@@ -1,15 +1,11 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Header from "./header";
 
 function App() {
   return (
-    <div className="flex h-screen bg-gray-100 items-center">
-  <div className="w-64 p-4 mx-auto bg-white shadow-lg rounded-xl">
-    <h1 className="text-center text-xl">Welcome to <br /> #react-typescript with #tailwindcss </h1>
-    <img src={logo} className="animate-spin" alt="logo" />
-  </div>
-</div>
+    <div className="m-16 mx-auto flex-row">
+      <Header />
+    </div>
   );
 }
 
