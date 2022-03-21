@@ -1,15 +1,31 @@
 import React, { useState } from "react";
 import InputContainer from "../InputContainer";
 
-const formFields = [
+interface formField {
+  id: number;
+  label: string;
+  type: string;
+  value: string;
+}
+
+const initialFormFields: formField[] = [
   { id: 1, label: "First Name", type: "text", value: "" },
   { id: 2, label: "Last Name", type: "text", value: "" },
   { id: 3, label: "Email", type: "email", value: "" },
   { id: 4, label: "Date of Birth", type: "date", value: "" },
 ];
-
+const initialState: () => formField[] = () => {
+  const formFieldsJSON = localStorage.getItem("formFields");
+  const persistentFormFields = formFieldsJSON
+    ? JSON.parse(formFieldsJSON)
+    : initialFormFields;
+  return persistentFormFields;
+};
+const saveFormData = (currentState: formField[]) => {
+  localStorage.setItem("formFields", JSON.stringify(currentState));
+};
 export function Form(props: { closeFormCB: () => void }) {
-  const [state, setState] = useState(formFields);
+  const [state, setState] = useState(initialState());
   const [newField, setNewField] = useState("");
 
   const addField = () => {
@@ -97,6 +113,12 @@ export function Form(props: { closeFormCB: () => void }) {
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
         >
           Clear All
+        </button>
+        <button
+          onClick={() => saveFormData(state)}
+          className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
+        >
+          Save
         </button>
       </div>
     </div>
