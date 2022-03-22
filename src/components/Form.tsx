@@ -38,6 +38,14 @@ export function Form(props: { closeFormCB: () => void }) {
       document.title = "React App";
     };
   }, []);
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      saveFormData(state);
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [state]);
   const addField = () => {
     setState([
       ...state,
