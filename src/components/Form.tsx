@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputContainer from "../InputContainer";
 
 interface formField {
@@ -21,6 +21,7 @@ const initialState: () => formField[] = () => {
     : initialFormFields;
   return persistentFormFields;
 };
+
 const saveFormData = (currentState: formField[]) => {
   localStorage.setItem("formFields", JSON.stringify(currentState));
 };
@@ -28,6 +29,15 @@ export function Form(props: { closeFormCB: () => void }) {
   const [state, setState] = useState(initialState());
   const [newField, setNewField] = useState("");
 
+  useEffect(() => {
+    console.log("Component was mounted");
+    const oldTitle = document.title;
+    document.title = "Form Editor";
+
+    return () => {
+      document.title = "React App";
+    };
+  }, []);
   const addField = () => {
     setState([
       ...state,
