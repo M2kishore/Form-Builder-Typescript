@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import InputContainer from "../InputContainer";
 
 interface formField {
@@ -8,32 +8,38 @@ interface formField {
   value: string;
 }
 
+interface formData {
+  title: string;
+  formFields: formField[];
+}
+
 const initialFormFields: formField[] = [
   { id: 1, label: "First Name", type: "text", value: "" },
   { id: 2, label: "Last Name", type: "text", value: "" },
   { id: 3, label: "Email", type: "email", value: "" },
   { id: 4, label: "Date of Birth", type: "date", value: "" },
 ];
-const initialState: () => formField[] = () => {
-  const formFieldsJSON = localStorage.getItem("formFields");
+const initialState: () => formData = () => {
+  const formFieldsJSON = localStorage.getItem("formData");
   const persistentFormFields = formFieldsJSON
     ? JSON.parse(formFieldsJSON)
-    : initialFormFields;
+    : { title: "Untitled Form", formFields: initialFormFields };
   return persistentFormFields;
 };
 
-const saveFormData = (currentState: formField[]) => {
-  localStorage.setItem("formFields", JSON.stringify(currentState));
+const saveFormData = (currentState: formData) => {
+  localStorage.setItem("formData", JSON.stringify(currentState));
 };
 export function Form(props: { closeFormCB: () => void }) {
   const [state, setState] = useState(initialState());
   const [newField, setNewField] = useState("");
+  const titleRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     console.log("Component was mounted");
     const oldTitle = document.title;
     document.title = "Form Editor";
-
+    titleRef.current?.focus();
     return () => {
       document.title = "React App";
     };
@@ -47,54 +53,71 @@ export function Form(props: { closeFormCB: () => void }) {
     };
   }, [state]);
   const addField = () => {
-    setState([
+    setState({
       ...state,
-      {
-        id: Number(new Date()),
-        label: newField,
-        type: "text",
-        value: "",
-      },
-    ]);
+      formFields: [
+        ...state.formFields,
+        {
+          id: Number(new Date()),
+          label: newField,
+          type: "text",
+          value: "",
+        },
+      ],
+    });
     setNewField("");
   };
 
   const removeField = (id: number) => {
-    setState(state.filter((field) => field.id !== id));
+    setState({
+      ...state,
+      formFields: state.formFields.filter((field) => field.id !== id),
+    });
   };
 
   const updateValue = (id: number, value: string) => {
-    setState(
-      state.map((field) => {
+    setState({
+      ...state,
+      formFields: state.formFields.map((field) => {
         if (field.id === id) return { ...field, value: value };
         return field;
-      })
-    );
+      }),
+    });
   };
 
   const clearAll = () => {
-    setState(
-      state.map((field) => {
+    setState({
+      ...state,
+      formFields: state.formFields.map((field) => {
         return { ...field, value: "" };
-      })
-    );
+      }),
+    });
   };
 
   return (
     <div className="flex flex-col gap-2 divide-y-2 divide-dotted p-4">
       <div>
-        {state.map((field) => (
-          <InputContainer
-            key={field.id}
-            id={field.id}
-            label={field.label}
-            type={field.type}
-            value={field.value}
-            removeFieldCB={removeField}
-            updateValueCB={updateValue}
-          />
-        ))}
+        <input
+          type="text"
+          className="border-2 border-gray-200 rounded-lg p-2 my-2 flex-1"
+          value={state.title}
+          onChange={(e) => {
+            setState({ ...state, title: e.target.value });
+          }}
+          ref={titleRef}
+        />
       </div>
+      {state.formFields.map((field: formField) => (
+        <InputContainer
+          key={field.id}
+          id={field.id}
+          label={field.label}
+          type={field.type}
+          value={field.value}
+          removeFieldCB={removeField}
+          updateValueCB={updateValue}
+        />
+      ))}
       <div className="flex">
         <input
           type="text"
