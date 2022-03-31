@@ -8,7 +8,7 @@ interface formField {
   value: string;
 }
 
-interface formData {
+export interface formData {
   title: string;
   formFields: formField[];
 }
