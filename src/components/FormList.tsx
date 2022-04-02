@@ -31,6 +31,17 @@ export default function FormList(props: {
     title: "untitled",
     formFields: initialFormFields,
   });
+  const deleteForm = (id: number) => {
+    const AllForms = localStorage.getItem("savedForms");
+    let persistentForms = AllForms ? JSON.parse(AllForms) : [];
+    if (persistentForms.length === 0) {
+      return;
+    }
+    persistentForms = persistentForms.filter(
+      (form: formData) => form.id !== id
+    );
+    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+  };
   const closeForm = () => {
     setState("FORM_LIST");
   };
@@ -50,6 +61,15 @@ export default function FormList(props: {
                 className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
               >
                 Open
+              </button>
+              <button
+                key={form.id}
+                onClick={() => {
+                  deleteForm(form.id);
+                }}
+                className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+              >
+                Delete
               </button>
             </div>
           );
