@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import InputContainer from "../InputContainer";
 
-interface formField {
+export interface formField {
   id: number;
   label: string;
   type: string;
@@ -20,19 +20,35 @@ const initialFormFields: formField[] = [
   { id: 3, label: "Email", type: "email", value: "" },
   { id: 4, label: "Date of Birth", type: "date", value: "" },
 ];
-const initialState: () => formData = () => {
-  const formFieldsJSON = localStorage.getItem("formData");
-  const persistentFormFields = formFieldsJSON
-    ? JSON.parse(formFieldsJSON)
-    : { title: "Untitled Form", formFields: initialFormFields };
-  return persistentFormFields;
-};
 
 const saveFormData = (currentState: formData) => {
-  localStorage.setItem("formData", JSON.stringify(currentState));
+  const AllForms = localStorage.getItem("savedForms");
+  const persistentForms = AllForms ? JSON.parse(AllForms) : [currentState];
+  const indexOfForm = persistentForms.findIndex(
+    (form: formData) => form.id === currentState.id
+  );
+  persistentForms[indexOfForm] = currentState;
+  localStorage.setItem("savedForms", JSON.stringify(persistentForms));
 };
-export function Form(props: { closeFormCB: () => void }) {
-  const [state, setState] = useState(initialState());
+export function Form(props: { closeFormCB: () => void; id: number }) {
+  const initialState: () => formData = () => {
+    const formFieldsJSON = localStorage.getItem("savedForms");
+    const persistentFormFields = formFieldsJSON
+      ? JSON.parse(formFieldsJSON)
+      : [
+          {
+            id: props.id,
+            title: "Untitled Form",
+            formFields: initialFormFields,
+          },
+        ];
+    const currentForm = persistentFormFields.filter((form: formData) => {
+      return form.id === props.id;
+    });
+    console.log(currentForm);
+    return currentForm[0];
+  };
+  const [state, setState] = useState<formData>(initialState());
   const [newField, setNewField] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
 
@@ -53,6 +69,13 @@ export function Form(props: { closeFormCB: () => void }) {
       clearTimeout(timeout);
     };
   }, [state]);
+  const addForm = (currentState: formData) => {
+    let forms = localStorage.getItem("savedForms");
+    currentState.id = Number(new Date());
+    let persistentForms = forms ? JSON.parse(forms) : [];
+    persistentForms.push(currentState);
+    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+  };
   const addField = () => {
     setState({
       ...state,
@@ -149,12 +172,11 @@ export function Form(props: { closeFormCB: () => void }) {
         >
           Close Form
         </button>
-
         <button
-          onClick={clearAll}
+          onClick={() => addForm(state)}
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
         >
-          Clear All
+          addForm
         </button>
         <button
           onClick={() => saveFormData(state)}

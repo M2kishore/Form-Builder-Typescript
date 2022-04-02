@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Form, formData } from "./Form";
+import { Form, formData, formField } from "./Form";
+const initialFormFields: formField[] = [
+  { id: 1, label: "First Name", type: "text", value: "" },
+  { id: 2, label: "Last Name", type: "text", value: "" },
+  { id: 3, label: "Email", type: "email", value: "" },
+  { id: 4, label: "Date of Birth", type: "date", value: "" },
+];
 export default function FormList(props: {
   closeFormListCB: () => void;
   closeFormCB: () => void;
@@ -8,17 +14,23 @@ export default function FormList(props: {
     let AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms
       ? JSON.parse(AllForms)
-      : { title: "Untitled Form", formFields: AllForms };
+      : [
+          {
+            id: Number(new Date()),
+            title: "Untitled Form",
+            formFields: initialFormFields,
+          },
+        ];
+    console.log(persistentForms);
     return persistentForms;
   };
-  const [state, setState] = useState("FORM_LIST");
-  const [Forms, setForms] = useState(InitialForms);
-  const [index, setIndex] = useState(0);
-  const addFormData = (form: formData) => {
-    setForms([...Forms, form]);
-    localStorage.setItem("savedForms", JSON.stringify(Forms));
-    return form;
-  };
+  const [state, setState] = useState<string>("FORM_LIST");
+  const [Forms, setForms] = useState<formData[]>(InitialForms);
+  const [selectedForm, setSelectedForm] = useState<formData>({
+    id: Number(new Date()),
+    title: "untitled",
+    formFields: initialFormFields,
+  });
   const closeForm = () => {
     setState("FORM_LIST");
   };
@@ -27,10 +39,14 @@ export default function FormList(props: {
       {state === "FORM_LIST" &&
         Forms.map((form: formData) => {
           return (
-            <div>
+            <div key={form.id}>
               {form.title}
               <button
-                onClick={() => setState("FORM")}
+                key={form.id}
+                onClick={() => {
+                  setState("FORM");
+                  setSelectedForm(form);
+                }}
                 className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
               >
                 Open
@@ -38,7 +54,9 @@ export default function FormList(props: {
             </div>
           );
         })}
-      {state === "FORM" && <Form closeFormCB={closeForm} />}
+      {state === "FORM" && (
+        <Form closeFormCB={closeForm} id={selectedForm.id} />
+      )}
       <button
         onClick={props.closeFormListCB}
         className="w-full rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
