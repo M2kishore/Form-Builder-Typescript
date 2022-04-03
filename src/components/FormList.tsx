@@ -52,16 +52,13 @@ export default function FormList(props: {
           return (
             <div key={form.id}>
               {form.title}
-              <button
+              <a
                 key={form.id}
-                onClick={() => {
-                  setState("FORM");
-                  setSelectedForm(form);
-                }}
+                href={`/form/${form.id}`}
                 className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
               >
                 Open
-              </button>
+              </a>
               <button
                 key={form.id}
                 onClick={() => {

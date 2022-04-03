@@ -6,7 +6,7 @@ import { Form } from "../components/Form";
 const routes = {
   "/": () => <App />,
   "/about": () => <About />,
-  "/form/:id": ({ id: string }) => <Form formId={Number(id)} />,
+  "/form/:id": ({ id }: { id: string }) => <Form formId={Number(id)} />,
 };
 
 export default function AppRouter() {
