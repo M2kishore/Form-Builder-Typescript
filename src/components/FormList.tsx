@@ -31,14 +31,14 @@ export default function FormList(props: {
     title: "untitled",
     formFields: initialFormFields,
   });
-  const deleteForm = (id: number) => {
+  const deleteForm = (formId: number) => {
     const AllForms = localStorage.getItem("savedForms");
     let persistentForms = AllForms ? JSON.parse(AllForms) : [];
     if (persistentForms.length === 0) {
       return;
     }
     persistentForms = persistentForms.filter(
-      (form: formData) => form.id !== id
+      (form: formData) => form.id !== formId
     );
     localStorage.setItem("savedForms", JSON.stringify(persistentForms));
   };
@@ -74,9 +74,7 @@ export default function FormList(props: {
             </div>
           );
         })}
-      {state === "FORM" && (
-        <Form closeFormCB={closeForm} id={selectedForm.id} />
-      )}
+      {state === "FORM" && <Form formId={selectedForm.id} />}
       <button
         onClick={props.closeFormListCB}
         className="w-full rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"

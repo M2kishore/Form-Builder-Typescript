@@ -18,16 +18,13 @@ function App() {
     setState("HOME");
   };
   return (
-    <AppContainer>
-      <div className="mx-auto rounded-xl bg-white p-4 shadow-lg">
-        <Header title="Welcome to Lesson 5 of $react-typescript with #tailwindcss" />
-        {state === "HOME" ? (
-          <Home openFormListCB={openFormList} />
-        ) : (
-          <FormList closeFormListCB={closeFormList} closeFormCB={closeForm} />
-        )}
-      </div>
-    </AppContainer>
+    <div>
+      {state === "HOME" ? (
+        <Home openFormListCB={openFormList} />
+      ) : (
+        <FormList closeFormListCB={closeFormList} closeFormCB={closeForm} />
+      )}
+    </div>
   );
 }
 

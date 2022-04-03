@@ -30,20 +30,20 @@ const saveFormData = (currentState: formData) => {
   persistentForms[indexOfForm] = currentState;
   localStorage.setItem("savedForms", JSON.stringify(persistentForms));
 };
-export function Form(props: { closeFormCB: () => void; id: number }) {
+export function Form(props: { formId: number }) {
   const initialState: () => formData = () => {
     const formFieldsJSON = localStorage.getItem("savedForms");
     const persistentFormFields = formFieldsJSON
       ? JSON.parse(formFieldsJSON)
       : [
           {
-            id: props.id,
+            id: props.formId,
             title: "Untitled Form",
             formFields: initialFormFields,
           },
         ];
     const currentForm = persistentFormFields.filter((form: formData) => {
-      return form.id === props.id;
+      return form.id === props.formId;
     });
     console.log(currentForm);
     return currentForm[0];
@@ -166,12 +166,12 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
         >
           Submit
         </button>
-        <button
-          onClick={props.closeFormCB}
+        <a
+          href="/"
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
         >
           Close Form
-        </button>
+        </a>
         <button
           onClick={() => addForm(state)}
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
