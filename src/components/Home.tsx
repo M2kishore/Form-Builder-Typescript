@@ -1,6 +1,4 @@
-import React from "react";
 import logo from "../logo.svg";
-
 export function Home(props: any) {
   return (
     <div>

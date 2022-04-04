@@ -1,3 +1,4 @@
+import { useQueryParams } from "raviger";
 import React, { useState } from "react";
 import { Form, formData, formField } from "./Form";
 const initialFormFields: formField[] = [
@@ -31,6 +32,8 @@ export default function FormList(props: {
     title: "untitled",
     formFields: initialFormFields,
   });
+  const [{ search }, setQuery] = useQueryParams();
+  const [searchString, setSearchString] = useState<string>("");
   const deleteForm = (formId: number) => {
     const AllForms = localStorage.getItem("savedForms");
     let persistentForms = AllForms ? JSON.parse(AllForms) : [];
@@ -47,8 +50,27 @@ export default function FormList(props: {
   };
   return (
     <div>
+      <label>Search</label>
+      <form
+        action="/"
+        method="GET"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setQuery({ search: searchString });
+        }}
+      >
+        <input
+          className="border-2 border-gray-200 w-ful`l rounded-lg p-2 my-2 flex-1"
+          name="search"
+          value={searchString}
+          onChange={(e) => setSearchString(e.target.value)}
+          type="text"
+        />
+      </form>
       {state === "FORM_LIST" &&
-        Forms.map((form: formData) => {
+        Forms.filter((form) =>
+          form.title.toLowerCase().includes(search?.toLowerCase())
+        ).map((form: formData) => {
           return (
             <div key={form.id}>
               {form.title}
