@@ -1,11 +1,5 @@
 import React, { useState } from "react";
 import { Form, formData, formField } from "./Form";
-const initialFormFields: formField[] = [
-  { id: 1, label: "First Name", type: "text", value: "" },
-  { id: 2, label: "Last Name", type: "text", value: "" },
-  { id: 3, label: "Email", type: "email", value: "" },
-  { id: 4, label: "Date of Birth", type: "date", value: "" },
-];
 export default function FormList(props: {
   closeFormListCB: () => void;
   closeFormCB: () => void;
@@ -14,13 +8,7 @@ export default function FormList(props: {
     let AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms
       ? JSON.parse(AllForms)
-      : [
-          {
-            id: Number(new Date()),
-            title: "Untitled Form",
-            formFields: initialFormFields,
-          },
-        ];
+      : [];
     console.log(persistentForms);
     return persistentForms;
   };
@@ -29,7 +17,7 @@ export default function FormList(props: {
   const [selectedForm, setSelectedForm] = useState<formData>({
     id: Number(new Date()),
     title: "untitled",
-    formFields: initialFormFields,
+    formFields: [],
   });
   const deleteForm = (id: number) => {
     const AllForms = localStorage.getItem("savedForms");
@@ -77,12 +65,26 @@ export default function FormList(props: {
       {state === "FORM" && (
         <Form closeFormCB={closeForm} id={selectedForm.id} />
       )}
-      <button
-        onClick={props.closeFormListCB}
-        className="w-full rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
-      >
-        Home
-      </button>
+      {state === "ADD_FORM" && (<div>
+        <Form closeFormCB={closeForm} id={-1} />
+      </div>
+      )}
+      {state === "FORM_LIST" && (
+        <div>
+
+          <button
+            onClick={props.closeFormListCB}
+            className="rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+          >
+            Home
+          </button>
+          <button
+            onClick={() => setState("ADD_FORM")}
+            className="rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+          >
+            Add Form
+          </button>
+        </div>)}
     </div>
   );
 }

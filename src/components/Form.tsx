@@ -20,18 +20,15 @@ const initialFormFields: formField[] = [
   { id: 3, label: "Email", type: "email", value: "" },
   { id: 4, label: "Date of Birth", type: "date", value: "" },
 ];
-
-const saveFormData = (currentState: formData) => {
-  const AllForms = localStorage.getItem("savedForms");
-  const persistentForms = AllForms ? JSON.parse(AllForms) : [currentState];
-  const indexOfForm = persistentForms.findIndex(
-    (form: formData) => form.id === currentState.id
-  );
-  persistentForms[indexOfForm] = currentState;
-  localStorage.setItem("savedForms", JSON.stringify(persistentForms));
-};
 export function Form(props: { closeFormCB: () => void; id: number }) {
   const initialState: () => formData = () => {
+    if(props.id === -1){
+      return {
+          id: Number(new Date()),
+          title: "Untitled Form",
+          formFields: initialFormFields,
+      }
+    }
     const formFieldsJSON = localStorage.getItem("savedForms");
     const persistentFormFields = formFieldsJSON
       ? JSON.parse(formFieldsJSON)
@@ -74,6 +71,19 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
     currentState.id = Number(new Date());
     let persistentForms = forms ? JSON.parse(forms) : [];
     persistentForms.push(currentState);
+    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+  };
+  const saveFormData = (currentState: formData) => {
+    const AllForms = localStorage.getItem("savedForms");
+    const persistentForms = AllForms ? JSON.parse(AllForms) : [currentState];
+    const indexOfForm = persistentForms.findIndex(
+      (form: formData) => form.id === currentState.id
+    );
+    if(indexOfForm === -1){
+      addForm(state);
+      return;
+    }
+    persistentForms[indexOfForm] = currentState;
     localStorage.setItem("savedForms", JSON.stringify(persistentForms));
   };
   const addField = () => {
@@ -171,12 +181,6 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
         >
           Close Form
-        </button>
-        <button
-          onClick={() => addForm(state)}
-          className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
-        >
-          addForm
         </button>
         <button
           onClick={() => saveFormData(state)}
