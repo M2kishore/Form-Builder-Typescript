@@ -1,3 +1,4 @@
+import { Link, navigate } from "raviger";
 import React, { useState, useEffect, useRef } from "react";
 import InputContainer from "../InputContainer";
 
@@ -51,6 +52,9 @@ export function Form(props: { formId: number }) {
   const [state, setState] = useState<formData>(initialState());
   const [newField, setNewField] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
+  useEffect(()=>{
+    state.id !== props.formId && navigate(`/form/${state.id}`)
+  },[state.id,props.formId])
 
   useEffect(() => {
     console.log("Component was mounted");
@@ -166,12 +170,12 @@ export function Form(props: { formId: number }) {
         >
           Submit
         </button>
-        <a
+        <Link
           href="/"
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
         >
           Close Form
-        </a>
+        </Link>
         <button
           onClick={() => addForm(state)}
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"

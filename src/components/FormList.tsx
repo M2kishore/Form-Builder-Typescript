@@ -1,5 +1,5 @@
-import { useQueryParams } from "raviger";
-import React, { useState } from "react";
+import { Link, useQueryParams } from "raviger";
+import React, { useEffect, useState } from "react";
 import { Form, formData, formField } from "./Form";
 const initialFormFields: formField[] = [
   { id: 1, label: "First Name", type: "text", value: "" },
@@ -74,13 +74,13 @@ export default function FormList(props: {
           return (
             <div key={form.id}>
               {form.title}
-              <a
+              <Link
                 key={form.id}
                 href={`/form/${form.id}`}
                 className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
               >
                 Open
-              </a>
+              </Link>
               <button
                 key={form.id}
                 onClick={() => {
