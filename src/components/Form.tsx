@@ -22,23 +22,23 @@ const initialFormFields: formField[] = [
 ];
 export function Form(props: { closeFormCB: () => void; id: number }) {
   const initialState: () => formData = () => {
-    if(props.id === -1){
+    if (props.id === -1) {
       return {
-          id: Number(new Date()),
-          title: "Untitled Form",
-          formFields: initialFormFields,
+        id: Number(new Date()),
+        title: "Untitled Form",
+        formFields: initialFormFields,
       }
     }
     const formFieldsJSON = localStorage.getItem("savedForms");
     const persistentFormFields = formFieldsJSON
       ? JSON.parse(formFieldsJSON)
       : [
-          {
-            id: props.id,
-            title: "Untitled Form",
-            formFields: initialFormFields,
-          },
-        ];
+        {
+          id: props.id,
+          title: "Untitled Form",
+          formFields: initialFormFields,
+        },
+      ];
     const currentForm = persistentFormFields.filter((form: formData) => {
       return form.id === props.id;
     });
@@ -48,6 +48,7 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
   const [state, setState] = useState<formData>(initialState());
   const [newField, setNewField] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
+  const [formType, setFormType] = useState("text");
 
   useEffect(() => {
     console.log("Component was mounted");
@@ -78,7 +79,7 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
     const indexOfForm = persistentForms.findIndex(
       (form: formData) => form.id === currentState.id
     );
-    if(indexOfForm === -1){
+    if (indexOfForm === -1) {
       addForm(state);
       return;
     }
@@ -93,7 +94,7 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
         {
           id: Number(new Date()),
           label: newField,
-          type: "text",
+          type: formType,
           value: "",
         },
       ],
@@ -118,14 +119,14 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
     });
   };
 
-  const clearAll = () => {
-    setState({
-      ...state,
-      formFields: state.formFields.map((field) => {
-        return { ...field, value: "" };
-      }),
-    });
-  };
+  // const clearAll = () => {
+  //   setState({
+  //     ...state,
+  //     formFields: state.formFields.map((field) => {
+  //       return { ...field, value: "" };
+  //     }),
+  //   });
+  // };
 
   return (
     <div className="flex flex-col gap-2 divide-y-2 divide-dotted p-4">
@@ -160,6 +161,18 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
             setNewField(e.target.value);
           }}
         />
+        <select
+          value={formType}
+          onChange={e => setFormType(e.target.value)}
+          className="border-2 border-gray-200 rounded-lg p-2"
+          placeholder="Type"
+        >
+          <option value="text">text</option>
+          <option value="date">date</option>
+          <option value="time">time</option>
+          <option value="datetime-local">date and time</option>
+          <option value="number">number</option>
+        </select>
         <button
           onClick={addField}
           className="m-1 rounded-xl bg-blue-500 px-2 text-white hover:bg-blue-700"
