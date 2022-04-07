@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Form, formData, formField } from "./Form";
+import React, { useEffect, useState } from "react";
+import { Form, formData} from "./Form";
 export default function FormList(props: {
   closeFormListCB: () => void;
   closeFormCB: () => void;
@@ -7,8 +7,8 @@ export default function FormList(props: {
   const InitialForms: () => formData[] = () => {
     let AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms
-      ? JSON.parse(AllForms)
-      : [];
+    ? JSON.parse(AllForms)
+    : [];
     console.log(persistentForms);
     return persistentForms;
   };
@@ -19,6 +19,16 @@ export default function FormList(props: {
     title: "untitled",
     formFields: [],
   });
+  useEffect(()=>{
+    let timeout = setTimeout(() => {
+      const AllForms = localStorage.getItem("savedForms");
+      let persistentForms = AllForms ? JSON.parse(AllForms) : [];
+      setForms(persistentForms)
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  },[Forms]);
   const deleteForm = (id: number) => {
     const AllForms = localStorage.getItem("savedForms");
     let persistentForms = AllForms ? JSON.parse(AllForms) : [];
@@ -29,6 +39,7 @@ export default function FormList(props: {
       (form: formData) => form.id !== id
     );
     localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+    setForms(persistentForms)
   };
   const closeForm = () => {
     setState("FORM_LIST");
@@ -46,7 +57,7 @@ export default function FormList(props: {
                   setState("FORM");
                   setSelectedForm(form);
                 }}
-                className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+                className="m-1 flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
               >
                 Open
               </button>
@@ -66,7 +77,7 @@ export default function FormList(props: {
         <Form closeFormCB={closeForm} id={selectedForm.id} />
       )}
       {state === "ADD_FORM" && (<div>
-        <Form closeFormCB={closeForm} id={-1} />
+        <Form closeFormCB={closeForm} id={-1}/>
       </div>
       )}
       {state === "FORM_LIST" && (
@@ -74,7 +85,7 @@ export default function FormList(props: {
 
           <button
             onClick={props.closeFormListCB}
-            className="rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+            className="m-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
           >
             Home
           </button>

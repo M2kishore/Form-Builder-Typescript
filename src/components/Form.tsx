@@ -51,7 +51,6 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
 
   useEffect(() => {
     console.log("Component was mounted");
-    const oldTitle = document.title;
     document.title = "Form Editor";
     titleRef.current?.focus();
     return () => {
