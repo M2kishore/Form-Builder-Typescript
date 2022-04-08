@@ -1,3 +1,4 @@
+import { Link } from "raviger";
 import React, { useState, useEffect, useRef } from "react";
 import InputContainer from "../InputContainer";
 
@@ -58,14 +59,6 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
       document.title = "React App";
     };
   }, []);
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      saveFormData(state);
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [state]);
   const addForm = (currentState: formData) => {
     let forms = localStorage.getItem("savedForms");
     currentState.id = Number(new Date());
@@ -78,15 +71,23 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
     const persistentForms = AllForms ? JSON.parse(AllForms) : [currentState];
     const indexOfForm = persistentForms.findIndex(
       (form: formData) => form.id === currentState.id
-    );
-    if (indexOfForm === -1) {
-      addForm(state);
-      return;
-    }
-    persistentForms[indexOfForm] = currentState;
-    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
-  };
-  const addField = () => {
+      );
+      if (indexOfForm === -1) {
+        addForm(state);
+        return;
+      }
+      persistentForms[indexOfForm] = currentState;
+      localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+    };
+    useEffect(() => {
+      let timeout = setTimeout(() => {
+        saveFormData(state);
+      }, 1000);
+      return () => {
+        clearTimeout(timeout);
+      };
+    }, [state]);
+    const addField = () => {
     setState({
       ...state,
       formFields: [
@@ -129,7 +130,7 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
   // };
 
   return (
-    <div className="flex flex-col gap-2 divide-y-2 divide-dotted p-4">
+    <div className="flex flex-col gap-2 p-4">
       <div>
         <input
           type="text"
@@ -164,7 +165,7 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
         <select
           value={formType}
           onChange={e => setFormType(e.target.value)}
-          className="border-2 border-gray-200 rounded-lg p-2"
+          className="border-2 m-1 border-gray-200 rounded-lg p-2"
           placeholder="Type"
         >
           <option value="text">text</option>
@@ -200,6 +201,11 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
         >
           Save
         </button>
+        <Link
+          href = {"/preview/"+props.id}
+          className="my-2 m-1 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700">
+          <div className="mx-7">Preview</div>
+        </Link>
       </div>
     </div>
   );
