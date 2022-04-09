@@ -1,5 +1,5 @@
-import React, {useState } from "react";
-import { Form, formData} from "./Form";
+import React, { useState } from "react";
+import { Form, formData } from "./Form";
 export default function FormList(props: {
   closeFormListCB: () => void;
   closeFormCB: () => void;
@@ -7,8 +7,8 @@ export default function FormList(props: {
   const InitialForms: () => formData[] = () => {
     let AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms
-    ? JSON.parse(AllForms)
-    : [];
+      ? JSON.parse(AllForms)
+      : [];
     console.log(persistentForms);
     return persistentForms;
   };
@@ -42,7 +42,6 @@ export default function FormList(props: {
             <div key={form.id}>
               {form.title}
               <button
-                key={form.id}
                 onClick={() => {
                   setState("FORM");
                   setSelectedForm(form);
@@ -52,7 +51,6 @@ export default function FormList(props: {
                 Open
               </button>
               <button
-                key={form.id}
                 onClick={() => {
                   deleteForm(form.id);
                 }}
@@ -67,7 +65,7 @@ export default function FormList(props: {
         <Form closeFormCB={closeForm} id={selectedForm.id} setFormsCB={setForms} Forms={Forms} />
       )}
       {state === "ADD_FORM" && (<div>
-        <Form closeFormCB={closeForm} id={-1} setFormsCB={setForms} Forms={Forms}/>
+        <Form closeFormCB={closeForm} id={-1} setFormsCB={setForms} Forms={Forms} />
       </div>
       )}
       {state === "FORM_LIST" && (
