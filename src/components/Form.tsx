@@ -20,7 +20,7 @@ const initialFormFields: formField[] = [
   { id: 3, label: "Email", type: "email", value: "" },
   { id: 4, label: "Date of Birth", type: "date", value: "" },
 ];
-export function Form(props: { closeFormCB: () => void; id: number }) {
+export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: any;Forms: formData[] }) {
   const initialState: () => formData = () => {
     if(props.id === -1){
       return {
@@ -57,21 +57,6 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
       document.title = "React App";
     };
   }, []);
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      saveFormData(state);
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [state]);
-  const addForm = (currentState: formData) => {
-    let forms = localStorage.getItem("savedForms");
-    currentState.id = Number(new Date());
-    let persistentForms = forms ? JSON.parse(forms) : [];
-    persistentForms.push(currentState);
-    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
-  };
   const saveFormData = (currentState: formData) => {
     const AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms ? JSON.parse(AllForms) : [currentState];
@@ -79,10 +64,26 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
       (form: formData) => form.id === currentState.id
     );
     if(indexOfForm === -1){
+      props.setFormsCB([...props.Forms,state])
       addForm(state);
       return;
     }
     persistentForms[indexOfForm] = currentState;
+    localStorage.setItem("savedForms", JSON.stringify(persistentForms));
+  };
+  useEffect(() => {
+    let timeout = setTimeout(() => {
+      saveFormData(state);
+    }, 1000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [state,saveFormData]);
+  const addForm = (currentState: formData) => {
+    let forms = localStorage.getItem("savedForms");
+    currentState.id = Number(new Date());
+    let persistentForms = forms ? JSON.parse(forms) : [];
+    persistentForms.push(currentState);
     localStorage.setItem("savedForms", JSON.stringify(persistentForms));
   };
   const addField = () => {
@@ -114,15 +115,6 @@ export function Form(props: { closeFormCB: () => void; id: number }) {
       formFields: state.formFields.map((field) => {
         if (field.id === id) return { ...field, value: value };
         return field;
-      }),
-    });
-  };
-
-  const clearAll = () => {
-    setState({
-      ...state,
-      formFields: state.formFields.map((field) => {
-        return { ...field, value: "" };
       }),
     });
   };

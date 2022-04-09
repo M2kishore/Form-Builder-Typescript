@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import { Form, formData} from "./Form";
 export default function FormList(props: {
   closeFormListCB: () => void;
@@ -19,16 +19,6 @@ export default function FormList(props: {
     title: "untitled",
     formFields: [],
   });
-  useEffect(()=>{
-    let timeout = setTimeout(() => {
-      const AllForms = localStorage.getItem("savedForms");
-      let persistentForms = AllForms ? JSON.parse(AllForms) : [];
-      setForms(persistentForms)
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  },[Forms]);
   const deleteForm = (id: number) => {
     const AllForms = localStorage.getItem("savedForms");
     let persistentForms = AllForms ? JSON.parse(AllForms) : [];
@@ -74,10 +64,10 @@ export default function FormList(props: {
           );
         })}
       {state === "FORM" && (
-        <Form closeFormCB={closeForm} id={selectedForm.id} />
+        <Form closeFormCB={closeForm} id={selectedForm.id} setFormsCB={setForms} Forms={Forms} />
       )}
       {state === "ADD_FORM" && (<div>
-        <Form closeFormCB={closeForm} id={-1}/>
+        <Form closeFormCB={closeForm} id={-1} setFormsCB={setForms} Forms={Forms}/>
       </div>
       )}
       {state === "FORM_LIST" && (
