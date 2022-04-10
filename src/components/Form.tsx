@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import {Link} from "raviger";
 import InputContainer from "../InputContainer";
 
 export interface formField {
@@ -48,7 +49,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
   const [state, setState] = useState<formData>(initialState());
   const [newField, setNewField] = useState("");
   const titleRef = useRef<HTMLInputElement>(null);
-
+  const [formType, setFormType] = useState("text");
   useEffect(() => {
     console.log("Component was mounted");
     document.title = "Form Editor";
@@ -94,7 +95,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
         {
           id: Number(new Date()),
           label: newField,
-          type: "text",
+          type: formType,
           value: "",
         },
       ],
@@ -120,7 +121,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
   };
 
   return (
-    <div className="flex flex-col gap-2 divide-y-2 divide-dotted p-4">
+    <div className="flex flex-col gap-2 p-4">
       <div>
         <input
           type="text"
@@ -152,6 +153,18 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
             setNewField(e.target.value);
           }}
         />
+        <select
+          value={formType}
+          onChange={e => setFormType(e.target.value)}
+          className="border-2 m-1 border-gray-200 rounded-lg p-2"
+          placeholder="Type"
+        >
+          <option value="text">text</option>
+          <option value="date">date</option>
+          <option value="time">time</option>
+          <option value="datetime-local">date and time</option>
+          <option value="number">number</option>
+        </select>
         <button
           onClick={addField}
           className="m-1 rounded-xl bg-blue-500 px-2 text-white hover:bg-blue-700"
@@ -170,7 +183,18 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
         <button
           onClick={props.closeFormCB}
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
-        >
+        ><select
+        value={formType}
+        onChange={e => setFormType(e.target.value)}
+        className="border-2 border-gray-200 rounded-lg p-2"
+        placeholder="Type"
+      >
+        <option value="text">text</option>
+        <option value="date">date</option>
+        <option value="time">time</option>
+        <option value="datetime-local">date and time</option>
+        <option value="number">number</option>
+      </select>
           Close Form
         </button>
         <button
@@ -179,6 +203,11 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
         >
           Save
         </button>
+        <Link
+          href = {"/preview/"+props.id}
+          className="my-2 m-1 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700">
+          <div className="mx-7">Preview</div>
+        </Link>
       </div>
     </div>
   );
