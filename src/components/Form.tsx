@@ -183,18 +183,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
         <button
           onClick={props.closeFormCB}
           className="my-2 w-1/4 rounded-xl bg-blue-500 p-2  text-white hover:bg-blue-700"
-        ><select
-        value={formType}
-        onChange={e => setFormType(e.target.value)}
-        className="border-2 border-gray-200 rounded-lg p-2"
-        placeholder="Type"
-      >
-        <option value="text">text</option>
-        <option value="date">date</option>
-        <option value="time">time</option>
-        <option value="datetime-local">date and time</option>
-        <option value="number">number</option>
-      </select>
+        >
           Close Form
         </button>
         <button
