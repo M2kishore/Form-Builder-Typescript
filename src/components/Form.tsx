@@ -132,7 +132,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
             const indexOfForm = formArrayCopy.findIndex(
               (form: formData) => form.id === state.id
             );
-            formArrayCopy[indexOfForm] = state;
+            formArrayCopy[indexOfForm].title = e.target.value;
             props.setFormsCB(formArrayCopy);
           }}
           ref={titleRef}
