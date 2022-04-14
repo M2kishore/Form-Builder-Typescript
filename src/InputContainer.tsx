@@ -1,14 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 
-export default function InputContainer(props: any) {
+export default function InputContainer(props:any) {
+  const [type,setType] = useState<string>(props.type);
+  const [value,setValue] = useState<string>(props.label)
   return (
     <>
-      <label>{props.label}</label>
       <div className="flex">
         <input
-          type={props.type}
+          type="text"
           className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
-          value={props.value}
+          defaultValue={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+            props.updateValueCB(props.id, e.target.value);
+          }}
+        />
+        <input
+          type="text"
+          className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
+          value={type}
           onChange={(e) => {
             props.updateValueCB(props.id, e.target.value);
           }}

@@ -14,7 +14,7 @@ export default function Preview(props:{formId:number}){
     const [i,setI]=useState<number>(0);
     const [result,setResult] = useState<string[]>([])
     return (<div>
-        {i!==state.formFields.length && (<><label>{state.formFields[i].label}</label><div className="flex">
+        {i!==state.formFields.length && (<div><label>{state.formFields[i].label}</label><div className="flex">
             <input
                 type={state.formFields[i].type}
                 className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
@@ -28,7 +28,7 @@ export default function Preview(props:{formId:number}){
             >
                 Next
             </button>
-        </div></>)}
-        {i===state.formFields.length && (<>The result is {result.map(res=>{return(<div>{res}</div>)})}</>)}
+        </div></div>)}
+        {i===state.formFields.length && (<>The result is {result.map((res,index)=>{return(<div key={index}>{res}</div>)})}</>)}
       </div>)
 } 
