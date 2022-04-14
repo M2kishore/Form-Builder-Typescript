@@ -114,7 +114,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
     setState({
       ...state,
       formFields: state.formFields.map((field) => {
-        if (field.id === id) return { ...field, value: value };
+        if (field.id === id) return { ...field, label: value };
         return field;
       }),
     });
@@ -165,11 +165,16 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           className="border-2 m-1 border-gray-200 rounded-lg p-2"
           placeholder="Type"
         >
+          <optgroup label="Textual">
           <option value="text">text</option>
           <option value="date">date</option>
           <option value="time">time</option>
           <option value="datetime-local">date and time</option>
           <option value="number">number</option>
+          </optgroup>
+          <optgroup>
+            
+          </optgroup>
         </select>
         <button
           onClick={addField}
