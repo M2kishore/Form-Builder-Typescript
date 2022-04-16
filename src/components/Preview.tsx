@@ -11,24 +11,25 @@ export default function Preview(props:{formId:number}){
     }
     const [state,setState] = useState<formData>(InitialState());
     const [answer,setAnswer] = useState<string>("");
-    const [i,setI]=useState<number>(0);
+    const [index,setIndex]=useState<number>(0);
     const [result,setResult] = useState<string[]>([])
     return (<div>
-        {i!==state.formFields.length && (<div><label>{state.formFields[i].label}</label><div className="flex">
+        {state.formFields.length === 0 && (<div>No fileds</div>)}
+        {index!==state.formFields.length && (<div><p className="text-xs">{index+1}/{state.formFields.length} fields</p><label>{state.formFields[index].label}</label><div className="flex">
             <input
-                type={state.formFields[i].type}
+                type={state.formFields[index].type}
                 className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
                 value={answer}
                 onChange={(e) => setAnswer(e.target.value)} />
             <button
-                onClick={() => {setI(i+1);
-                     setResult([...result,answer]); 
+                onClick={() => {setIndex(index+1);
+                     setResult([...result,answer]);
                      setAnswer("") } }
                 className="m-2 rounded-xl bg-blue-500 px-2 text-white hover:bg-blue-700"
             >
                 Next
             </button>
         </div></div>)}
-        {i===state.formFields.length && (<>The result is {result.map((res,index)=>{return(<div key={index}>{res}</div>)})}</>)}
+        {index===state.formFields.length && (state.formFields.length !== 0) && (<>The result is {result.map((res,index)=>{return(<div key={index}>{res}</div>)})}</>)}
       </div>)
 } 
