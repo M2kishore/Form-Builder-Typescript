@@ -172,8 +172,8 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           <option value="datetime-local">date and time</option>
           <option value="number">number</option>
           </optgroup>
-          <optgroup>
-            
+          <optgroup label="Selection">
+
           </optgroup>
         </select>
         <button
