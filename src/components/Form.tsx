@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {Link} from "raviger";
 import InputContainer from "../InputContainer";
-import { Multiselect } from "./Multiselect";
-import { Radio } from "./Radio";
-import { fileURLToPath } from "url";
 
 export interface formField {
   id: number;

@@ -4,7 +4,6 @@ export default function InputContainer(props:any) {
   const [type,setType] = useState<string>(props.type);
   const [value,setValue] = useState<string>(props.label)
   const [selectOption,setSelectOption] = useState<string>("")
-  const [options,setOptions] = useState<string[]>(props.options)
   return (
     <>
       {props.type !== "radio" && props.type !== "multiselect" &&(<div className="flex">
