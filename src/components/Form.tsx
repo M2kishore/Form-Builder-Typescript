@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import {Link} from "raviger";
 import InputContainer from "../InputContainer";
+import { Multiselect } from "./Multiselect";
+import { Radio } from "./Radio";
+import { fileURLToPath } from "url";
 
 export interface formField {
   id: number;
   label: string;
   type: string;
   value: string;
+  options: [];
 }
 
 export interface formData {
@@ -16,10 +20,10 @@ export interface formData {
 }
 
 const initialFormFields: formField[] = [
-  { id: 1, label: "First Name", type: "text", value: "" },
-  { id: 2, label: "Last Name", type: "text", value: "" },
-  { id: 3, label: "Email", type: "email", value: "" },
-  { id: 4, label: "Date of Birth", type: "date", value: "" },
+  { id: 1, label: "First Name", type: "text", value: "", options:[]},
+  { id: 2, label: "Last Name", type: "text", value: "",options:[]},
+  { id: 3, label: "Email", type: "email", value: "", options:[] },
+  { id: 4, label: "Date of Birth", type: "date", value: "", options:[] },
 ];
 export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: any;Forms: formData[] }) {
   const initialState: () => formData = () => {
@@ -97,6 +101,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           label: newField,
           type: formType,
           value: "",
+          options:[]
         },
       ],
     });
@@ -120,6 +125,15 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
     });
   };
 
+  const updateOptions = (id: number, options: []) => {
+    setState({
+      ...state,
+      formFields: state.formFields.map((field) => {
+        if (field.id === id) return { ...field, options:options };
+        return field;
+      }),
+    });
+  };
   return (
     <div className="flex flex-col gap-2 p-4">
       <div>
@@ -139,8 +153,16 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           ref={titleRef}
         />
       </div>
-      {state.formFields.map((field: formField) => (
-        <InputContainer
+      {state.formFields.map((field: formField) => {
+        // if(field.type === 'radio'){
+        //   return (<><Radio key={field.id} label={field.label}
+        //     id={field.id} removeFieldCB={removeField} options={field.options}/></>)
+        // }
+        // else if(field.type === 'multiselect'){
+        //   return (<><Multiselect key={field.id} label={field.label}
+        //     id={field.id} removeFieldCB={removeField}/></>)
+        // }
+        return (<InputContainer
           key={field.id}
           id={field.id}
           label={field.label}
@@ -148,8 +170,11 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           value={field.value}
           removeFieldCB={removeField}
           updateValueCB={updateValue}
-        />
-      ))}
+          updateOptionsCB={updateOptions}
+          options={field.options}
+        />)
+      }
+      )}
       <div className="flex">
         <input
           type="text"
@@ -173,7 +198,8 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           <option value="number">number</option>
           </optgroup>
           <optgroup label="Selection">
-
+          <option value="radio">radio</option>
+          <option value="multiselect">multiselect</option>
           </optgroup>
         </select>
         <button
