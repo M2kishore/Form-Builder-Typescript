@@ -121,7 +121,7 @@ export default function InputContainer(props:any) {
       >
         Add Item
       </button></div>{props.options.map((option:string,optionId:number)=>{
-        return (<div>{option}<button
+        return (<div key={optionId}>{option}<button
           onClick={(e)=>{
             let neededOptions = props.options.filter((thisOption:string,id:number)=>{return optionId !== id});
             props.updateOptionsCB(props.id,[...neededOptions]);

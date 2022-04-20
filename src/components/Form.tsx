@@ -44,7 +44,6 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
     const currentForm = persistentFormFields.filter((form: formData) => {
       return form.id === props.id;
     });
-    console.log(currentForm);
     return currentForm[0];
   };
   const [state, setState] = useState<formData>(initialState());
@@ -52,7 +51,6 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
   const titleRef = useRef<HTMLInputElement>(null);
   const [formType, setFormType] = useState("text");
   useEffect(() => {
-    console.log("Component was mounted");
     document.title = "Form Editor";
     titleRef.current?.focus();
     return () => {

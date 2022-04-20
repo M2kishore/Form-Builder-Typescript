@@ -9,7 +9,6 @@ export default function FormList(props: {
     const persistentForms = AllForms
       ? JSON.parse(AllForms)
       : [];
-    console.log(persistentForms);
     return persistentForms;
   };
   const [state, setState] = useState<string>("FORM_LIST");
