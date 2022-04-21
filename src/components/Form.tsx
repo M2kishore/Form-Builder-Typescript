@@ -195,6 +195,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
           <optgroup label="Selection">
           <option value="radio">radio</option>
           <option value="multiselect">multiselect</option>
+          <option value="dropdown">dropdown</option>
           </optgroup>
         </select>
         <button

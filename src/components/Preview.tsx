@@ -14,7 +14,7 @@ export default function Preview(props: { formId: number }) {
     const [index, setIndex] = useState<number>(0);
     const [result, setResult] = useState<any[]>([])
     const [checkboxOptions, setCheckboxOptions] = useState<string[]>([])
-    const handleInputChange = (event:any) => {
+    const handleInputChange = (event: any) => {
         console.log(event.target.value);
         setAnswer(event.target.value);
     };
@@ -46,7 +46,7 @@ export default function Preview(props: { formId: number }) {
             </div>)}
 
             {state.formFields[index].type === "radio" && (<>{
-                state.formFields[index].options.map((option: string,optionIndex:number) => {
+                state.formFields[index].options.map((option: string, optionIndex: number) => {
                     return (<div>{option}<input
                         type="radio"
                         name={state.formFields[index].label}
@@ -68,7 +68,7 @@ export default function Preview(props: { formId: number }) {
                 </button>
             </>)}
 
-            {state.formFields[index].type === "multiselect" && (<>{state.formFields[index].options.map((option: string) => {
+            {/* {state.formFields[index].type === "multiselect" && (<>{state.formFields[index].options.map((option: string) => {
                 return (<div>{option}<input
                     type="checkbox"
                     className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
@@ -77,7 +77,44 @@ export default function Preview(props: { formId: number }) {
 
                 </div>)
             })}
-            <button
+
+                <button
+                    onClick={() => {
+                        setIndex(index + 1);
+                        setResult([...result, checkboxOptions]);
+                        setAnswer("")
+                        setCheckboxOptions([]);
+                    }}
+                    className="m-2 rounded-xl bg-blue-500 px-2 text-white hover:bg-blue-700"
+                >
+                    Next
+                </button>
+            </>)} */}
+            {state.formFields[index].type === "multiselect" && (<>
+                <select
+                    className="block w-full bg-slate-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
+                    id={state.formFields[index].id.toString()}
+                    name={state.formFields[index].label}
+                    value="select"
+                    onChange={(e) => {
+                        setCheckboxOptions(
+                            [...Array.from(
+                                e.target.selectedOptions,
+                                (option) => option.value
+                            )]
+                        )
+                    }}
+                    multiple={true}
+                >
+                    {state.formFields[index].options.map((option:string)=>{
+                        return(<option key={option} value={option}>{option}</option>)
+                    })}
+                </select>
+                {state.formFields[index].options.map((option: string) => {
+                    return (<div></div>)
+                })}
+
+                <button
                     onClick={() => {
                         setIndex(index + 1);
                         setResult([...result, checkboxOptions]);
@@ -89,7 +126,39 @@ export default function Preview(props: { formId: number }) {
                     Next
                 </button>
             </>)}
+            {state.formFields[index].type === "dropdown" && (<>
+                <select
+                    className="block w-full bg-slate-100 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none"
+                    id={state.formFields[index].id.toString()}
+                    name={state.formFields[index].label}
+                    value="select"
+                    onChange={(e) => {
+                        setAnswer(e.target.value)
+                    }}
+                    multiple
+                >
+                    {state.formFields[index].options.map((option:string)=>{
+                        return(<option key={option} value={option}>{option}</option>)
+                    })}
+                </select>
+                {state.formFields[index].options.map((option: string) => {
+                    return (<div></div>)
+                })}
+
+                <button
+                    onClick={() => {
+                        setIndex(index + 1);
+                        setResult([...result, answer]);
+                        setAnswer("")
+                        setCheckboxOptions([]);
+                    }}
+                    className="m-2 rounded-xl bg-blue-500 px-2 text-white hover:bg-blue-700"
+                >
+                    Next
+                </button>
+            </>)}
         </div></div>)}
+
         {index === state.formFields.length && (state.formFields.length !== 0) && (<>The result is
             {console.log(result)}
             {result.map((res, index) => {
@@ -100,6 +169,5 @@ export default function Preview(props: { formId: number }) {
                 }
                 return (<div>{res}</div>)
             })}</>)}
-
     </div>)
 } 
