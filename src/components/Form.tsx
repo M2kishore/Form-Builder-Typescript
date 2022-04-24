@@ -22,7 +22,7 @@ const initialFormFields: formField[] = [
   { id: 3, label: "Email", type: "email", value: "", options:[] },
   { id: 4, label: "Date of Birth", type: "date", value: "", options:[] },
 ];
-export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: any;Forms: formData[] }) {
+export function Form(props: { closeFormCB: () => void; id: number;dispatchCB: any;Forms: formData[] }) {
   const initialState: () => formData = () => {
     if(props.id === -1){
       return {
@@ -64,7 +64,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
       (form: formData) => form.id === currentState.id
     );
     if(indexOfForm === -1){
-      props.setFormsCB([...props.Forms,state])
+      props.dispatchCB({type: "update_forms",Forms: [...props.Forms,state]})
       addForm(state);
       return;
     }
@@ -143,7 +143,7 @@ export function Form(props: { closeFormCB: () => void; id: number;setFormsCB: an
               (form: formData) => form.id === state.id
             );
             formArrayCopy[indexOfForm].title = e.target.value;
-            props.setFormsCB(formArrayCopy);
+            props.dispatchCB({type:"update_forms",Forms:formArrayCopy});
           }}
           ref={titleRef}
         />
