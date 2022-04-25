@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import {Link} from "raviger";
 import InputContainer from "../InputContainer";
+import FocusLock from "react-focus-lock";
+import {useKey} from "react-use";
 
 export interface formField {
   id: number;
@@ -23,6 +25,7 @@ const initialFormFields: formField[] = [
   { id: 4, label: "Date of Birth", type: "date", value: "", options:[] },
 ];
 export function Form(props: { closeFormCB: () => void; id: number;dispatchCB: any;Forms: formData[] }) {
+  useKey("Escape", props.closeFormCB);
   const initialState: () => formData = () => {
     if(props.id === -1){
       return {
@@ -129,7 +132,7 @@ export function Form(props: { closeFormCB: () => void; id: number;dispatchCB: an
       }),
     });
   };
-  return (
+  return (<FocusLock>
     <div className="flex flex-col gap-2 p-4">
       <div>
         <input
@@ -232,5 +235,6 @@ export function Form(props: { closeFormCB: () => void; id: number;dispatchCB: an
         </Link>
       </div>
     </div>
+    </FocusLock>
   );
 }

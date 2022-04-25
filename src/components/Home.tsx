@@ -1,11 +1,16 @@
 import React from "react";
 import logo from "../logo.svg";
 import 'react-toastify/dist/ReactToastify.css';
+import FocusLock from "react-focus-lock";
+
 import { Link } from "raviger";
+import { useKey } from "react-use";
 
 export function Home(props: any) {
+  useKey("o", props.openFormListCB);
   return (
     <>
+    <FocusLock>
       <div className="flex ">
         <img className="h-48" src={logo} alt="logo" />
         <div className="flex flex-1 items-center justify-center">
@@ -25,6 +30,8 @@ export function Home(props: any) {
         className="w-full my-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
         >
         Api Form
-      </button></Link></>
+      </button></Link>
+      </FocusLock>
+      </>
   );
 }

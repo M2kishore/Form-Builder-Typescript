@@ -1,9 +1,12 @@
 import React, { useState, useReducer } from "react";
 import { Form, formData } from "./Form";
+import FocusLock from "react-focus-lock";
+import { useKey } from "react-use";
 export default function FormList(props: {
   closeFormListCB: () => void;
   closeFormCB: () => void;
 }) {
+  useKey("Escape", props.closeFormListCB);
   const InitialForms: () => formData[] = () => {
     let AllForms = localStorage.getItem("savedForms");
     const persistentForms = AllForms
@@ -58,6 +61,7 @@ export default function FormList(props: {
     setState("FORM_LIST");
   };
   return (
+    <FocusLock>
     <div>
       {state === "FORM_LIST" &&
         Forms.map((form: formData) => {
@@ -108,5 +112,6 @@ export default function FormList(props: {
           </button>
         </div>)}
     </div>
+    </FocusLock>
   );
 }
