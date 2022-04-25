@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../logo.svg";
+import { login } from "./auth/Api";
 
 export function Home(props: any) {
   return (
@@ -15,6 +16,12 @@ export function Home(props: any) {
         className="w-full rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
       >
         Open Form
+      </button>
+      <button
+        onClick={async()=>{let result = await login("kishore","kishore7KISHORE");console.log(result);alert(result.token);}}
+        className="w-full my-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+      >
+        Api call
       </button>
     </div>
   );

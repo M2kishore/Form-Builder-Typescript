@@ -28,7 +28,7 @@ export default function Preview(props: { formId: number }) {
     return (<div>
         {state.formFields.length === 0 && (<div>No fileds</div>)}
         {index !== state.formFields.length && (<div><p className="text-xs">{index + 1}/{state.formFields.length} fields</p><label>{state.formFields[index].label}</label><div className="flex">
-            {state.formFields[index].type === "text" && (<div><input
+            {state.formFields[index].type !== "radio" && state.formFields[index].type !== "multiselect" && (<div><input
                 type={state.formFields[index].type}
                 className="my-2 w-full flex-1 rounded-lg border-2 border-gray-200 p-2"
                 value={answer}
