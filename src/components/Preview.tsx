@@ -9,7 +9,7 @@ export default function Preview(props: { formId: number }) {
         })
         return currentForm[0];
     }
-    const [state, setState] = useState<formData>(InitialState());
+    const [state] = useState<formData>(InitialState());
     const [answer, setAnswer] = useState<string>("");
     const [index, setIndex] = useState<number>(0);
     const [result, setResult] = useState<any[]>([])
@@ -18,13 +18,13 @@ export default function Preview(props: { formId: number }) {
         console.log(event.target.value);
         setAnswer(event.target.value);
     };
-    const handleCheckboxChange = (event: any) => {
-        let newArray = [...checkboxOptions, event.target.value];
-        if (checkboxOptions.includes(event.target.value)) {
-            newArray = newArray.filter(day => day !== event.target.value);
-        }
-        setCheckboxOptions(newArray);
-    };
+    // const handleCheckboxChange = (event: any) => {
+    //     let newArray = [...checkboxOptions, event.target.value];
+    //     if (checkboxOptions.includes(event.target.value)) {
+    //         newArray = newArray.filter(day => day !== event.target.value);
+    //     }
+    //     setCheckboxOptions(newArray);
+    // };
     return (<div>
         {state.formFields.length === 0 && (<div>No fileds</div>)}
         {index !== state.formFields.length && (<div><p className="text-xs">{index + 1}/{state.formFields.length} fields</p><label>{state.formFields[index].label}</label><div className="flex">

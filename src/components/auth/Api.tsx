@@ -26,7 +26,7 @@ export const customRequest = async (
   }
   // Token Auth
   const auth = "Basic " + window.btoa("anuranroy02:7PtjhbM3TwkX2Zu");
-  const token = localStorage.getItem("authToken");
+  //const token = localStorage.getItem("authToken");
   //const auth = token ? "Token " + localStorage.getItem("authToken") : "";
 
   console.log("Auth header = " + auth);
