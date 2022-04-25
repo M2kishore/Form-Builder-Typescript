@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export default function InputContainer(props:any) {
-  const [type,setType] = useState<string>(props.type);
+  const [type] = useState<string>(props.type);
   const [value,setValue] = useState<string>(props.label)
   const [selectOption,setSelectOption] = useState<string>("")
   return (
