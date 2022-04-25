@@ -1,5 +1,6 @@
 import { navigate } from "raviger";
 import React, { useState, useReducer, useEffect } from "react";
+import { classNames } from "react-select/dist/declarations/src/utils";
 import { customRequest } from "./auth/Api";
 import { Form, formData } from "./Form";
 export default function ApiFormList() {
@@ -75,18 +76,28 @@ export default function ApiFormList() {
           {form.title}
           <button onClick={() => {
             setSelectedForm(form);
-            alert(form.title+" \n"+form.description)
+
           }}
-            className="m-1 flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
-          >Open</button><button
-            onClick={() => navigate("/")}
-            className="m-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
-          >
-            Home
-          </button>
+            className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+          >Open</button>
         </div>
       </>)
     }))}
+    <div className="flex">
+
+    <button
+      onClick={() => navigate("/")}
+      className="m-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+      >
+      Home
+    </button>
+    <button
+      onClick={() => navigate("/createapiform")}
+      className="m-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
+      >
+      Add Form
+    </button>
+      </div>
     {!Forms && (<div>no forms</div>)}
   </>)
 }
