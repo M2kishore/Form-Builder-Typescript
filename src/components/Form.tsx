@@ -71,14 +71,14 @@ export function Form(props: { closeFormCB: () => void; id: number;dispatchCB: an
     persistentForms[indexOfForm] = currentState;
     localStorage.setItem("savedForms", JSON.stringify(persistentForms));
   };
-  useEffect(() => {
-    let timeout = setTimeout(() => {
-      saveFormData(state);
-    }, 1000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [state,saveFormData]);
+  // useEffect(() => {
+  //   let timeout = setTimeout(() => {
+  //     saveFormData(state);
+  //   }, 1000);
+  //   return () => {
+  //     clearTimeout(timeout);
+  //   };
+  // }, [state,saveFormData]);
   const addForm = (currentState: formData) => {
     let forms = localStorage.getItem("savedForms");
     currentState.id = Number(new Date());
