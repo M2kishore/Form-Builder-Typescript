@@ -1,12 +1,9 @@
 import React from "react";
 import logo from "../logo.svg";
-import { login } from "./auth/Api";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link } from "raviger";
 
 export function Home(props: any) {
-  const notify = () => toast("Wow so easy!");
   return (
     <>
       <div className="flex ">
@@ -28,11 +25,6 @@ export function Home(props: any) {
         className="w-full my-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
         >
         Api Form
-      </button></Link><button
-        onClick={notify}
-        className="w-full my-1 rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
-      >
-        Toast message from npm package
-      </button><ToastContainer /></>
+      </button></Link></>
   );
 }

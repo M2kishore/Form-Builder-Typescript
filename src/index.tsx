@@ -2,8 +2,11 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import AppRouter from "./router/AppRouter";
-ReactDOM.render(
-  <AppRouter/>,
+import { NavigationProvider } from 'react-keyboard-navigation';
+ReactDOM.render(<NavigationProvider>
+
+  <AppRouter />
+</NavigationProvider>,
   document.getElementById("root")
 );
 

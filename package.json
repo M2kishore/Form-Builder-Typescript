@@ -13,6 +13,7 @@
     "raviger": "^4.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-keyboard-navigation": "0.0.3",
     "react-scripts": "5.0.0",
     "react-select": "^5.3.0",
     "react-toastify": "^8.2.0",

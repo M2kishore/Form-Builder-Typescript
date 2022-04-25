@@ -1,8 +1,7 @@
 import { navigate } from "raviger";
-import React, { useState, useReducer, useEffect } from "react";
-import { classNames } from "react-select/dist/declarations/src/utils";
+import React, { useState, useEffect } from "react";
 import { customRequest } from "./auth/Api";
-import { Form, formData } from "./Form";
+import {withFocus} from "react-keyboard-navigation";
 export default function ApiFormList() {
   // const InitialForms: () => formData[] = () => {
   //   let AllForms = localStorage.getItem("savedForms");
@@ -46,9 +45,9 @@ export default function ApiFormList() {
   //const [Forms, dispatch] = useReducer(reducer, InitialForms());
   const [Forms, setForms] = useState<ApiForm[]>();
   //const [Forms, setForms] = useState<formData[]>(InitialForms);
-  const [selectedForm, setSelectedForm] = useState<ApiForm>({
-    title: "untitled",
-  });
+  // const [selectedForm, setSelectedForm] = useState<ApiForm>({
+  //   title: "untitled",
+  // });
   // const deleteForm = (id: number) => {
   //   const AllForms = localStorage.getItem("savedForms");
   //   let persistentForms = AllForms ? JSON.parse(AllForms) : [];
@@ -75,7 +74,6 @@ export default function ApiFormList() {
         <div key={form.id}>
           {form.title}
           <button onClick={() => {
-            setSelectedForm(form);
 
           }}
             className="flex-right rounded-xl bg-blue-500 p-2 text-white hover:bg-blue-700"
