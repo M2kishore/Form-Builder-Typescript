@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Form Builder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An application that builds Form and Preview it.
 
 ## Available Scripts
 
